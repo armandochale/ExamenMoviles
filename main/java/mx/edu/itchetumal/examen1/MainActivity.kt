@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,22 +43,30 @@ class MainActivity : AppCompatActivity() {
         val mes = spnMes.selectedItem.toString()
         val annio = spnAn.selectedItem.toString()
 
-        //Obtener valores para formar CURP
+        //Obtener valores para formar RFC de los spinner
         val apePArray = apeP.split("")
         val apeMCurp = apeM.split("")
         val nomCurp = nombre.split("")
         val annioArray = annio.split("")
 
-        //Obtener primer vocal
-
+        //Obtener primer vocal del apellido paterno
         val apeVocal = apePArray.find{it.equals("a")||it.equals("e")||it.equals("i")||it.equals("o")||it.equals("u")}
 
+        //Crear Homoclave
+        val homArray = arrayOf("1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H","I","J","K","L",
+        "M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z")
+        //Elegir 3 valores al azar
+        val rand1 = Random.nextInt(0,homArray.size)
+        val rand2 = Random.nextInt(0,homArray.size)
+        val rand3 = Random.nextInt(0,homArray.size)
 
-        //Crear CURP
-        val curp = apePArray[1] + apeVocal + apeMCurp[1] + nomCurp[1] + dia + mes + annioArray[3]+annioArray[4]
+        //Crear RFC
+        val curp = apePArray[1] + apeVocal + apeMCurp[1] + nomCurp[1] + annioArray[3]+annioArray[4] + mes + dia + homArray[rand1] +
+                homArray[rand2] + homArray[rand3]
 
-        txtCurp.text = curp
-        println(curp)
+        //Imprimir RFC en pantalla y en consola
+        txtCurp.text = curp.uppercase()
+        println(curp.uppercase())
     }
 
     //Limpiar funcion
@@ -65,7 +74,9 @@ class MainActivity : AppCompatActivity() {
         txtNom.text.clear()
         txtApeP.text.clear()
         txtApeM.text.clear()
-
+        spnDia.setSelection(0)
+        spnMes.setSelection(0)
+        spnAn.setSelection(0)
         txtCurp.text = ""
     }
 
